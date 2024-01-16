@@ -11,19 +11,9 @@ const db_academia = new sqlite3.Database('db_academia.db');
 router.use(bodyParser.json());  // Middleware para procesar el cuerpo de la solicitud en formato JSON
 
 // Función para validar fecha y hora
-function isValidDateTime(dateString, timeString) {
-  const dateTimeString = `${dateString} ${timeString}`;
-  const isValidFormat = moment(dateTimeString, 'YYYY-MM-DD HH:mm', true).isValid();
-
-  if (!isValidFormat) {
-    return false;
-  }
-
-  // Validar la hora específicamente
-  const hour = moment(dateTimeString, 'YYYY-MM-DD HH:mm', true).hour();
-  const minute = moment(dateTimeString, 'YYYY-MM-DD HH:mm', true).minute();
-
-  return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59;
+function isValidDate(dateString, timeString) {
+  const isValidFormat = moment(`${dateString} ${timeString}`, 'YYYY-MM-DD HH:mm', true).isValid();
+  return isValidFormat;
 }
 
 // Configurar una ruta para obtener datos de la base de datos
@@ -48,7 +38,7 @@ router.post('/', (req, res) => {
   }
 
   // Validar la fecha y hora utilizando moment
-  if (!isValidDateTime(fecha, hora)) {
+  if (!isValidDate(fecha, hora)) {
     return res.status(400).json({ error: 'Fecha u hora no válidos' });
   }
 
