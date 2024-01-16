@@ -1,0 +1,17 @@
+# Node.js
+node_modules/
+npm-debug.log
+.DS_Store
+
+# SQLite database
+*.db
+
+# Logs
+logs/
+*.log
+
+# Editor files
+.vscode/
+
+# npm
+package-lock.json
