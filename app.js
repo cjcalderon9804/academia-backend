@@ -19,7 +19,7 @@ app.use(cors());
 
   // Crear una tabla vacía de profesores
   db_academia.serialize(() => {
-    db_academia.run('CREATE TABLE IF NOT EXISTS profesores (id INTEGER PRIMARY KEY, nombre TEXT)');
+    db_academia.run('CREATE TABLE IF NOT EXISTS profesores (id INTEGER PRIMARY KEY, nombre TEXT UNIQUE)');
   });
 
 // Fin Profesores
@@ -30,8 +30,8 @@ app.use(cors());
 
   // Crear una tabla vacía de materias
   db_academia.serialize(() => {
-    db_academia.run('CREATE TABLE IF NOT EXISTS materias (id INTEGER PRIMARY KEY, nombre TEXT)');
-  });
+    db_academia.run('CREATE TABLE IF NOT EXISTS materias (id INTEGER PRIMARY KEY, nombre TEXT UNIQUE)');
+  });  
 
 // Fin Materias
 
