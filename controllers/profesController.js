@@ -30,11 +30,20 @@ router.post('/', (req, res) => {
   }
 
   const insert = db_academia.prepare('INSERT INTO profesores (nombre) VALUES (?)');
-  insert.run(nombre);
-  insert.finalize();
+  insert.run(nombre, (err) => {
+    if (err) {
+      // Verificar si el error es debido a una violación de unicidad
+      if (err.message.includes('UNIQUE constraint failed: profesores.nombre')) {
+        return res.status(400).json({ error: 'Ya existe un profesor con ese nombre' });
+      } else {
+        console.error(err.message);
+        return res.status(500).send('Error en el servidor');
+      }
+    }
 
-  res.json({ message: 'Profesor agregado correctamente' });
+    insert.finalize();
+    res.json({ message: 'Profesor agregado correctamente' });
+  });
 });
-
 
 module.exports = router;

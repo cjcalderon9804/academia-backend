@@ -30,11 +30,20 @@ router.post('/', (req, res) => {
   }
 
   const insert = db_academia.prepare('INSERT INTO materias (nombre) VALUES (?)');
-  insert.run(nombre);
-  insert.finalize();
+  insert.run(nombre, (err) => {
+    if (err) {
+      // Verificar si el error es debido a una violación de unicidad
+      if (err.message.includes('UNIQUE constraint failed: materias.nombre')) {
+        return res.status(400).json({ error: 'Ya existe una materia con ese nombre' });
+      } else {
+        console.error(err.message);
+        return res.status(500).send('Error en el servidor');
+      }
+    }
 
-  res.json({ message: 'Materia agregada correctamente' });
+    insert.finalize();
+    res.json({ message: 'Materia agregada correctamente' });
+  });
 });
-
 
 module.exports = router;
