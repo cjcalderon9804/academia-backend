@@ -5,13 +5,13 @@ const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 
 const router = express.Router();
-const db_profes = new sqlite3.Database('db_profes.db');
+const db_academia = new sqlite3.Database('db_academia.db');
 
 router.use(bodyParser.json());  // Middleware para procesar el cuerpo de la solicitud en formato JSON
 
 // Configurar una ruta para obtener datos de la base de datos
 router.get('/', (req, res) => {
-  db_profes.all('SELECT * FROM profesores', (err, rows) => {
+  db_academia.all('SELECT * FROM profesores', (err, rows) => {
     if (err) {
       console.error(err.message);
       res.status(500).send('Error en el servidor');
@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
     return res.status(400).json({ error: 'El nombre del profesor es obligatorio' });
   }
 
-  const insert = db_profes.prepare('INSERT INTO profesores (nombre) VALUES (?)');
+  const insert = db_academia.prepare('INSERT INTO profesores (nombre) VALUES (?)');
   insert.run(nombre);
   insert.finalize();
 

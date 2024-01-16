@@ -8,17 +8,19 @@ const materiasController = require('./controllers/materiasController');
 const app = express();
 const port = 3000;
 
+// Crear una base de datos "db_academia.db"
+const db_academia = new sqlite3.Database('db_academia.db');
+
 // Habilitar CORS
 app.use(cors());
 
 // Inicio Profesores:
 
-  // Conectar a la base de datos SQLite (creará un archivo llamado 'db_profes.db')
-  const db_profes = new sqlite3.Database('db_profes.db');
+
 
   // Crear una tabla de ejemplo
-  db_profes.serialize(() => {
-    db_profes.run('CREATE TABLE IF NOT EXISTS profesores (id INTEGER PRIMARY KEY, nombre TEXT)');
+  db_academia.serialize(() => {
+    db_academia.run('CREATE TABLE IF NOT EXISTS profesores (id INTEGER PRIMARY KEY, nombre TEXT)');
   });
 
 // Fin Profesores
@@ -26,12 +28,9 @@ app.use(cors());
 
 // Inicio Materias:
 
-  // Conectar a la base de datos SQLite (creará un archivo llamado 'db_profes.db')
-  const db_materias = new sqlite3.Database('db_materias.db');
-
-  // Crear una tabla de ejemplo
-  db_materias.serialize(() => {
-    db_materias.run('CREATE TABLE IF NOT EXISTS materias (id INTEGER PRIMARY KEY, nombre TEXT)');
+  // Crear una tabla vacía
+  db_academia.serialize(() => {
+    db_academia.run('CREATE TABLE IF NOT EXISTS materias (id INTEGER PRIMARY KEY, nombre TEXT)');
   });
 
 // Fin Materias
